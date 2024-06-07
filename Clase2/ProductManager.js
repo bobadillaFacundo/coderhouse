@@ -17,9 +17,18 @@ class ProductManager{
         return this.productos[this.productos.length-1];
     }
     getProductById(id){
-        if (this.productos[id]==null)
+        let p 
+        for (let i = 0; i < this.productos.length; i++) {
+            const element = this.productos[i];
+            if (element[0]==id){
+                p=element
+                break;
+            }
+        }
+        
+        if (p==null)
             return `ERROR, no se encuentra ID`
-        else return this.productos[id];
+        else return p;
     }
 }
 
@@ -34,3 +43,4 @@ console.log(a.getProducts());
 console.log(a.getProduct());
 console.log(a.getProductById(2));
 console.log(a.getProductById(1));
+console.log(a.getProductById(12112));
