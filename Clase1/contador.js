@@ -32,3 +32,11 @@ console.log(b.getCuentaIndividual())
 console.log(Contador.getCuentaGlobal())
 console.log(c.getResponsable())
 
+function mostrarLista(arreglo){
+    if (arreglo.length==0) return "No tiene elementos"
+    else return `Los elementos del arreglo son: ${arreglo} y tiene ${arreglo.length} elementos`
+}
+
+console.log(mostrarLista([]))
+console.log(mostrarLista(["Pedro","Maria","Pablo"]))
+
