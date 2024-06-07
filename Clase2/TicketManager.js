@@ -80,3 +80,9 @@ console.log(tm.getEventos())
 console.log(tm.ponerEventoEnGira(2,"Lujan","07/09/2024"))
 console.log(tm.agregarUsuario(1,2))
 console.log(tm.getEventos())
+console.log(tm.agregarUsuario(2,3))
+console.log(tm.agregarUsuario(1,2))
+console.log(tm.agregarUsuario(3,1))
+console.log(tm.getEventos())
+
+
