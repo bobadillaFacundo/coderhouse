@@ -4,7 +4,8 @@
   "description": "",
   "main": "contador.js",
   "scripts": {
-"start": "node --watch contador.js"  },
+    "start": "node --watch contador.js"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
