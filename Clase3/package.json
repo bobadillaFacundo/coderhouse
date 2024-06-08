@@ -1,0 +1,12 @@
+{
+  "name": "Clase3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "CalculadoraPositiva.js",
+  "scripts": {
+    "start": "node --watch CalculadoraPositiva.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
