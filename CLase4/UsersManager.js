@@ -23,8 +23,17 @@ class UserManager{
         UserManager.Usuarios.push(usuario)
     }
 
+    mostrarUsuarios(){
+        return UserManager.Usuarios
+    }
+
+    validarUsuarios(User,Password){
+
+
+
+    }
 }
 
 u = new UserManager()
 u.crearUsuario("pepe","alfonso","pepe2024",'12345')
-console.log(UserManager.Usuarios)
+console.log(u.mostrarUsuarios())

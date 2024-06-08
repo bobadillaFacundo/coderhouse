@@ -2,10 +2,10 @@
   "name": "clase4",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "UsersManager.js",
   "scripts": {
-    "start": "node --watch "
+    "start": "node --watch UsersManager.js"
   },
-  "author": "Facundo Bobadilla",
+  "author": "",
   "license": "ISC"
 }
