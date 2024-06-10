@@ -45,7 +45,7 @@ const division=(num1,num2)=>{
 const calculos = async()=>{
 
     try {
-       result = await sumar(0,15)
+       result = await sumar(15,15)
        console.log(result)
     } catch (error) {
         console.log(error)

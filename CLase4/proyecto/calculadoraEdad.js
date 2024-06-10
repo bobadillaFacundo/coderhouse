@@ -11,8 +11,12 @@ class CalculadoraEdad{
             if (moment.isValid(fecha)){
                 console.log("fecha validad")
             } else console.log("fecha invalidad")
-            
         }
+
+        
+
+
+
 
 
 
