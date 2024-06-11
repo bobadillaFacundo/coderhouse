@@ -1,59 +1,94 @@
-class ProductManager{
-    
+const fs = require('fs');
 
-    constructor(){
-        this.productos=[];
-        this.id=0;
+class ProductManager{
+
+    #id 
+
+    constructor(path){
+        this.#id=0;
+        this.path = path
     }
+
     getProducts(){
-        return this.productos;
+        const productos = this.getProductsFromFile()
+        return productos;
     }
+
     addProduct(title,description,price,thumbnail,code,stock){
-        this.id++;
-        let producto = [this.id,title,description,price,thumbnail,code,stock];
-        this.productos.push(producto);
-    }
-    getProduct(){
-        return this.productos[this.productos.length-1];
-    }
-    getProductById(id){
-        let p 
-        for (let i = 0; i < this.productos.length; i++) {
-            const element = this.productos[i];
-            if (element[0]==id){
-                p=element
-                break;
-            }
+        this.#id++;
+        let producto = {
+            id: this.#id,
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
+            stock
         }
-        
-        if (p==null)
-            return `ERROR, no se encuentra ID`
-        else return p;
+        const productos = this.getProductsFromFile()
+        const result = this.validarId(this.#id)
+        if (!result) {
+        productos.push(producto)
+        this.saveProductsToFile(productos)
+        return "Exito"
+        }else return "codigo ya existe"
     }
+
+    getProductById(id){
+        const p = this.validarId(id)
+
+        if (!p)
+            return `ERROR, no se encuentra ID`
+        else 
+            return p;
+    }
+
+    validarId(id){
+        const productos = this.getProductsFromFile()
+        const result = productos.find((producto)=>producto.id===id)
+        return result
+    }
+
+    deleteProduct(id){
+        const p = this.validarId(id)
+    
+        if (!p)
+        {
+            return `ERROR, no se encuentra ID ${id}`
+        }
+        else 
+        {
+            const products = p.filter((product) => product.id!==id)
+            this.saveProductsToFile(products)
+            return "Exito";
+        }    
+    }
+
+    getProductsFromFile() {
+        try {
+          const data = fs.readFileSync(this.path, 'utf8')
+          return JSON.parse(data)
+        } catch (error) {
+          // Si el archivo no existe o está vacío, devuelve un arreglo vacío
+          return []
+        }
+      }
+
+    saveProductsToFile(product) {
+        fs.writeFileSync(this.path, JSON.stringify(product), 'utf8')
+      }
+
 }
 
-const a = new ProductManager()
+
+
+const a = new ProductManager("./Clase5")
+a.addProduct("producto prueba","Este es un producto prueba",200,"Sin imagen","abc123",25);
+/*a.addProduct("producto prueba 2","Este es un producto prueba",2003434,"Sin imagen","abc12345",2533);
+console.log(a.getProducts())
+console.log(a.getProductById(2))*/
 console.log(a.getProducts())
 a.addProduct("producto prueba","Este es un producto prueba",200,"Sin imagen","abc123",25);
 console.log(a.getProducts())
-a.addProduct("producto prueba 2","Este es un producto prueba",2003434,"Sin imagen","abc12345",2533);
-console.log(a.getProducts())
-console.log(a.getProduct())
-console.log(a.getProductById(2))
-console.log(a.getProductById(1))
-console.log(a.getProductById(12112))
-
-
-const ar = ["pedro","maria"]
-console.log(ar)
-const id = "id"
-const result = Object.entries(ar)
-console.log(result)
-const result2 = Object.keys(result)
-console.log(result2)
-const result3 = result.flat()
-console.log(result3)
-
-
-
+a.deleteProduct(1)
 
