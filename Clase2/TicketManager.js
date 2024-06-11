@@ -1,8 +1,9 @@
 class TicketManager{
+    #precioBaseDeGanancia
 
     constructor(precioBaseDeGanancia){
         this.eventos=Array()
-        this.precioBaseDeGanancia=precioBaseDeGanancia
+        this.#precioBaseDeGanancia=precioBaseDeGanancia
         this.id=0
     }
 
@@ -12,7 +13,7 @@ class TicketManager{
 
     agregarEvento(nombre,lugar,precio){
         this.id++
-        let p = ((precio*0,15)/100)+this.precioBaseDeGanancia
+        let p = ((precio*0,15)/100)+this.#precioBaseDeGanancia
         let fecha = new Date()
         let participantes = Array()
         let evento=[this.id,nombre,lugar,p,50,`${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,participantes]
@@ -23,26 +24,29 @@ class TicketManager{
         let r=  `No existe el idEvento: ${idEvento} o el iUsuario: ${idUsuario} ya esta registrado`
         let b = false
         let event
+        //validacion evento
         for (let i = 0; i < this.eventos.length; i++) {
             event=this.eventos[i]
             if (event[0] == idEvento){
                 b=true
                 break;
             } 
-        }   if(b){
-                let f= true
-                for (let i = 0; i < event[6].length; i++) {
-                    const element = event[6][i];
-                    if (element==idUsuario)
-                        f=false
-                        break;
-                }
-                if (f){
-                event[6].push(idUsuario)
-                r = "Exito"}
+        }   
+        if(b){
+            let f= true
+            
+            for (let i = 0; i < event[6].length; i++) {
+                const element = event[6][i];
+                if (element==idUsuario)
+                f=false
+                break;
+            }
+        if (f){
+            event[6].push(idUsuario)
+            r = "Exito"}
         }
 
-         return r
+        return r
     }
 
         ponerEventoEnGira(idEvento,nuevaLocalidad,nuevaFecha){
@@ -58,7 +62,7 @@ class TicketManager{
         }   if(b){
                 let fecha=new Date(nuevaFecha)
                 this.id++
-                this.eventos.push(this.id,event[1],nuevaLocalidad,event[3],event[4],`${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,event[6])
+                this.eventos.push(this.id,event[1],nuevaLocalidad,event[3],event[4],`${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,[])
                 r = "Exito"
         }
          return r

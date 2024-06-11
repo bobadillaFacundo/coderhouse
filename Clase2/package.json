@@ -1,0 +1,11 @@
+{
+  "name": "clase2",
+  "version": "1.0.0",
+  "main": "ProductManager.js",
+  "scripts": {
+      "start": "node --watch ProductManager.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

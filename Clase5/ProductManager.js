@@ -20,13 +20,13 @@ class ProductManager{
         let p 
         for (let i = 0; i < this.productos.length; i++) {
             const element = this.productos[i];
-            if (element[0]===id){
+            if (element[0]==id){
                 p=element
                 break;
             }
         }
         
-        if (p===null)
+        if (p==null)
             return `ERROR, no se encuentra ID`
         else return p;
     }
