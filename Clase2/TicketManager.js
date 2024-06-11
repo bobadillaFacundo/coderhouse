@@ -1,9 +1,8 @@
 class TicketManager{
     #precioBaseDeGanancia
-
-    constructor(precioBaseDeGanancia){
+    constructor(){
         this.eventos=Array()
-        this.#precioBaseDeGanancia=precioBaseDeGanancia
+        this.#precioBaseDeGanancia=0
         this.id=0
     }
 
@@ -11,71 +10,62 @@ class TicketManager{
         return this.eventos
     }
 
-    agregarEvento(nombre,lugar,precio){
+    agregarEvento(nombre,lugar,precio,cantidad){
         this.id++
-        let p = ((precio*0,15)/100)+this.#precioBaseDeGanancia
+        cantidad+=cantidad+50
+        precio += precio*0.15
         let fecha = new Date()
         let participantes = Array()
-        let evento=[this.id,nombre,lugar,p,50,`${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,participantes]
+        let evento={
+            id: this.id,
+            nombre,
+            lugar,
+            precio,
+            cantidad,
+            fecha: `${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,
+            participantes}
         this.eventos.push(evento)
     }
 
     agregarUsuario(idEvento,idUsuario){        
-        let r=  `No existe el idEvento: ${idEvento} o el iUsuario: ${idUsuario} ya esta registrado`
-        let b = false
-        let event
-        //validacion evento
-        for (let i = 0; i < this.eventos.length; i++) {
-            event=this.eventos[i]
-            if (event[0] == idEvento){
-                b=true
-                break;
-            } 
-        }   
-        if(b){
-            let f= true
-            
-            for (let i = 0; i < event[6].length; i++) {
-                const element = event[6][i];
-                if (element==idUsuario)
-                f=false
-                break;
-            }
-        if (f){
-            event[6].push(idUsuario)
-            r = "Exito"}
-        }
+        let event = this.eventos.find((evento)=>evento.id===idEvento)
+        
+        if(!event){
+            return `No existe el idEvento: ${idEvento}`
+        }else
+        {
+            if (!(event.participantes.includes(idUsuario)))
+            {
+                event.participantes.push(idUsuario)
+                return "Exito"
 
-        return r
-    }
+            }else return `el iUsuario: ${idUsuario} ya esta registrado`
+        }
+        }
 
         ponerEventoEnGira(idEvento,nuevaLocalidad,nuevaFecha){
-        let r=  `No existe el idEvento: ${idEvento}`
-        let b = false
-        let event
-        for (let i = 0; i < this.eventos.length; i++) {
-            event=this.eventos[i]
-            if (event[0] == idEvento){
-                b=true
-                break;
-            } 
-        }   if(b){
-                let fecha=new Date(nuevaFecha)
-                this.id++
-                this.eventos.push(this.id,event[1],nuevaLocalidad,event[3],event[4],`${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,[])
-                r = "Exito"
+        let event = this.eventos.find((evento)=>evento.id===idEvento)
+        
+        if(!event){
+            return `No existe el idEvento: ${idEvento}`
         }
-         return r
+        let fecha=new Date(nuevaFecha)
+        this.id++
+        this.eventos.push(this.id,event[1],nuevaLocalidad,event[3],event[4],`${fecha.getDay()}/${fecha.getMonth()}/${fecha.getFullYear()}`,event[6])
 
+        return "Exito"
     }
 }
 
 
+    
+
+
 let tm = new TicketManager(1000)
 console.log(tm.getEventos())
-tm.agregarEvento("boda","Formosa",10000)
-tm.agregarEvento("15","Formosa",35343)
-tm.agregarEvento("bautismo","Formosa",876532)
+tm.agregarEvento("boda","Formosa",10000,1000)
+tm.agregarEvento("15","Formosa",35343,2000)
+tm.agregarEvento("bautismo","Formosa",876532,3000)
 console.log(tm.getEventos())
 console.log(tm.agregarUsuario(3,2))
 console.log(tm.getEventos())

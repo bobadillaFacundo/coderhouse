@@ -10,23 +10,26 @@ class ProductManager{
     }
     addProduct(title,description,price,thumbnail,code,stock){
         this.id++;
-        let producto = [this.id,title,description,price,thumbnail,code,stock];
+        let producto = {
+            id: this.id,
+            title: title,
+            description: description,
+            price:price,
+            thumbnail:thumbnail,
+            code:code,
+            stock:stock
+        }
         this.productos.push(producto);
     }
+    
     getProduct(){
         return this.productos[this.productos.length-1];
     }
+
     getProductById(id){
-        let p 
-        for (let i = 0; i < this.productos.length; i++) {
-            const element = this.productos[i];
-            if (element[0]===id){
-                p=element
-                break;
-            }
-        }
+        let p = this.productos.find(product => product.id === id)
         
-        if (p===null)
+        if (!p)
             return `ERROR, no se encuentra ID`
         else return p;
     }
