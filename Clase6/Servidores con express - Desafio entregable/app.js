@@ -1,5 +1,6 @@
 import express from 'express'
 import fs from 'fs'
+
 const app = express()
 const port = 8080
 
@@ -10,81 +11,31 @@ app.listen(port, () => {
 
 app.use(express.urlencoded({ extended: true }))
 
-const products = [{
-    id: 1,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-}, {
-    id: 2,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-},
-{
-    id: 3,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-},
-{
-    id: 4,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-},
-{
-    id: 5,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-},
-{
-    id: 6,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-}, {
-    id: 7,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-},
-{
-    id: 8,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-},
-{
-    id: 9,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-},
-{
-    id: 10,
-    nombre: "manzana",
-    cantidad: 54,
-    precioo: 5541
-}]
+function getProductsFromFile(path) {
+    try {
+        const data = fs.readFileSync(path, 'utf8')
+        return JSON.parse(data)
+    } catch (error) {
+        return []
+    }
+}
+const products = getProductsFromFile("./Products.json")
 
 app.get("/products", (req, res) => {
-    res.send("Productos: ", products)
-})
-
-app.get("/productos/limit", (req, res) => {
-
-
-
-    
+    res.send(products)
 })
 
 app.get("/:UserID", (req, res) => {
     const product = products.find(product => product.id === req.params.UserID)
-if (!product){
-    return res.send("ID no existe")
-}
-res.send("Usuario:",product)
-
+    if (!product) {
+        res.status(404).send('ID no encontrado');
+    }
+    res.send(product)
 })
+
+app.get("/:limit", (req, res) => {
+        let limit = parseInt(req.query.limit)
+        resultado = products.slice(0, limit);
+        res.send(resultado)
+    }
+)
