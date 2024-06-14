@@ -1,3 +1,4 @@
+const { log } = require('console');
 const fs = require('fs');
 
 class ProductManager {
@@ -10,14 +11,12 @@ class ProductManager {
     }
 
     getProducts() {
-        const productos = this.getProductsFromFile()
-        return productos;
+        return this.getProductsFromFile()
     }
 
     addProduct(title, description, price, thumbnail, code, stock) {
-        // this.#id=Math.random();
         this.#id++;
-        let producto = {
+        const product = {
             id: this.#id,
             title,
             description,
@@ -26,44 +25,35 @@ class ProductManager {
             code,
             stock
         }
-        const productos = this.getProductsFromFile()
-        // const result = this.validarId(this.#id)
-        // if (!result) {
-        //     productos.push(producto)
-        //     this.saveProductsToFile(productos)
-        //     return "Exito"
-        // } else return "codigo ya existe"
-        productos.push(producto)
-        this.saveProductsToFile(productos)
+        const products = this.getProductsFromFile()
+        products.push(product)
+        this.saveProductsToFile(products)
 
     }
 
     getProductById(id) {
-        const p = this.validarId(id)
+        const p = this.validateId(id)
 
         if (!p)
             return `ERROR, no se encuentra ID`
-        else
-            return p;
+
+        return p;
     }
 
-    validarId(id) {
-        const productos = this.getProductsFromFile()
-        const result = productos.find((producto) => producto.id === id)
-        return result
+    validateId(id) {
+        const products = this.getProductsFromFile()
+        return products.find((product) => product.id === id)
     }
 
     deleteProduct(id) {
-        const p = this.validarId(id)
-        if (!p) {
+        const p = this.validateId(id)
+        if (!p)
             return `ERROR, no se encuentra ID ${id}`
-        }
-        else {
-            const arr = this.getProductsFromFile();
-            const products = arr.filter((product) => product.id !== id)
-            this.saveProductsToFile(products)
-            return "Exito";
-        }
+
+        const arr = this.getProductsFromFile();
+        const products = arr.filter((product) => product.id !== id)
+        this.saveProductsToFile(products)
+
     }
 
     getProductsFromFile() {
@@ -71,7 +61,6 @@ class ProductManager {
             const data = fs.readFileSync(this.path, 'utf8')
             return JSON.parse(data)
         } catch (error) {
-            // Si el archivo no existe o está vacío, devuelve un arreglo vacío
             return []
         }
     }
@@ -80,15 +69,43 @@ class ProductManager {
         fs.writeFileSync(this.path, JSON.stringify(product), 'utf8')
     }
 
+    updateProduct(product) {
+        const arr = this.getProductsFromFile();
+        const result2 = arr.find(produ => produ.id === product.id)
+        if (!result2)
+            return `ERROR, no se encuentra ID ${product.id}`
+        result2.title = product.title
+        result2.description = product.description
+        result2.price = product.price
+        result2.thumbnail = product.thumbnail
+        result2.code = product.code
+        result2.stock = product.stock
+        this.saveProductsToFile(arr)
+    }
+
+    unlinkFileProduct() {
+        fs.unlink(this.path, (error) => {
+            if (error) {
+                console.error('Error al eliminar el archivo:', error)
+                return;
+            }
+            console.log('El archivo ha sido eliminado satisfactoriamente.')
+        })
+    }
 }
 
 
 
-const a = new ProductManager("./Clase5")
+const a = new ProductManager("./Products.json")
 a.addProduct("producto prueba", "Este es un producto prueba", 200, "Sin imagen", "abc123", 25);
 a.addProduct("producto prueba2", "Este es un producto prueba2", 200, "Sin imagen", "abc123", 25);
-console.log("Productos:")
+a.addProduct("producto prueba3", "Este es un producto prueba3", 200, "Sin imagen", "abc123", 25);
+console.log("Productos agregados:")
 console.log(a.getProducts())
-a.deleteProduct(1)
-console.log("Productos:")
+a.deleteProduct(2)
+console.log("Productos despues de eliminar el 2:")
 console.log(a.getProducts())
+a.updateProduct({ id: 1, title: "cambio", description: "cambio", price: 32423, thumbnail: "cambio", code: "abcd12345", stock: 21121 })
+console.log("Productos despues de actualizar el 1:")
+console.log(a.getProducts())
+//a.unlinkFileProduct()
