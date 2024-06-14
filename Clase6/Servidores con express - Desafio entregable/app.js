@@ -22,6 +22,11 @@ function getProductsFromFile(path) {
 const products = getProductsFromFile("./Products.json")
 
 app.get("/products", (req, res) => {
+    if (req.query.limit){
+        let l = parseInt(req.query.limit)
+        let resultado = products.slice(0, l);
+        return res.send(resultado)        
+    }
     res.send(products)
 })
 
@@ -33,9 +38,3 @@ app.get("/:UserID", (req, res) => {
     res.send(product)
 })
 
-app.get("/:limit", (req, res) => {
-        let limit = parseInt(req.query.limit)
-        resultado = products.slice(0, limit);
-        res.send(resultado)
-    }
-)
