@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "first_name": "carlos",
+        "last_name": "perez",
+        "age": 55
+    },
+    {
+        "id": "2",
+        "first_name": "pedro",
+        "last_name": "gonzales",
+        "age": 21
+    },
+    {
+        "id": "3",
+        "first_name": "juan",
+        "last_name": "cabrera",
+        "age": 35
+    },
+    {
+        "id": "6",
+        "first_name": "camila",
+        "last_name": "joga",
+        "age": "27"
+    }
+]
