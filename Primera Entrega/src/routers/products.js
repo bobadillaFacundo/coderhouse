@@ -2,7 +2,7 @@ import { Router } from "express"
 import f from "../file.js"
 
 const router = Router()
-let products = f.getProductsFromFile("./src/products.json")
+let products = f.getProductsFromFile("./products.json")
 
 router.get("/", (req, res) => {
     if (req.query.limit) {
@@ -27,7 +27,7 @@ router.get("/:pid", (req, res) => {
 router.post("/", ((req, res) => {
     const user = req.body
     if (!user.title || !user.description || !user.code || !user.stock || !user.category || !user.price)
-        return res.status(404).send({ status: "success", error: "Campos vacios" })
+        return res.status(400).send({ status: "success", error: "Campos vacios" })
     let id = Date.now();
     const product = {
         id,
@@ -48,14 +48,33 @@ router.post("/", ((req, res) => {
 
 router.put("/:pid", (req, res) => {
     const user = req.body
+    console.log(req.params.pid);
+    const pid = parseInt(req.params.pid)
+    const productIndex = products.findIndex(prod => prod.id === pid);
+
+    if (productIndex === -1) {
+        return res.status(404).send({ status: "success", error: "No se encontro id" })
+    }
+
+    products[productIndex].title = user.title || products[productIndex].title
+    products[productIndex].description = user.description || products[productIndex].description
+    products[productIndex].code = user.code || products[productIndex].code
+    products[productIndex].price = user.price || products[productIndex].price
+    products[productIndex].stock = user.stock || products[productIndex].stock
+    products[productIndex].category = user.category || products[productIndex].category
+    products[productIndex].thumbnails = user.thumbnails || products[productIndex].thumbnails;
+    f.saveProductsToFile(products, "./products.json")
+    return res.send({ status: "success", message: "Product update" })
 
 })
 
 router.delete("/:pid", (req, res) => {
+    const len = products.length
     products = products.filter(product => product.id !== req.palabra.pid)
+    if (len === products.length)
+        return res.status(404).send({ status: "success", error: "No se encontro id" })
     f.saveProductsToFile(products, "./products.json")
     return res.send({ status: "success", message: "Product delete" })
 })
-
 
 export default router
