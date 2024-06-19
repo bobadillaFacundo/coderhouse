@@ -2,11 +2,11 @@ import fs from "fs"
 
 class filess {
 
-    saveProductsToFile(element, path) {
+    saveToFile(element, path) {
         fs.writeFileSync(path, JSON.stringify(element), 'utf8')
     }
 
-    getProductsFromFile(path) {
+    getFromFile(path) {
         try {
             const data = fs.readFileSync(path, 'utf8')
             return JSON.parse(data)

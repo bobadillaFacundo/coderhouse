@@ -1,8 +1,8 @@
 import { Router } from "express"
-import f from "../file.js"
+import f from "../filess.js"
 
 const router = Router()
-let products = f.getProductsFromFile("./products.json")
+let products = f.getFromFile("./products.json")
 
 router.get("/", (req, res) => {
     if (req.query.limit) {
@@ -28,7 +28,7 @@ router.post("/", ((req, res) => {
     const user = req.body
     if (!user.title || !user.description || !user.code || !user.stock || !user.category || !user.price)
         return res.status(400).send({ status: "success", error: "Campos vacios" })
-    let id = Date.now();
+    let id = Date.now()
     const product = {
         id,
         title: user.title,
@@ -42,7 +42,7 @@ router.post("/", ((req, res) => {
     }
     products.push(product)
     console.log(products);
-    f.saveProductsToFile(products, "./products.json")
+    f.saveToFile(products, "./products.json")
     return res.send({ status: "success", message: "Product create" })
 }))
 
@@ -63,7 +63,7 @@ router.put("/:pid", (req, res) => {
     products[productIndex].stock = user.stock || products[productIndex].stock
     products[productIndex].category = user.category || products[productIndex].category
     products[productIndex].thumbnails = user.thumbnails || products[productIndex].thumbnails;
-    f.saveProductsToFile(products, "./products.json")
+    f.saveToFile(products, "./products.json")
     return res.send({ status: "success", message: "Product update" })
 
 })
@@ -73,7 +73,7 @@ router.delete("/:pid", (req, res) => {
     products = products.filter(product => product.id !== req.palabra.pid)
     if (len === products.length)
         return res.status(404).send({ status: "success", error: "No se encontro id" })
-    f.saveProductsToFile(products, "./products.json")
+    f.saveToFile(products, "./products.json")
     return res.send({ status: "success", message: "Product delete" })
 })
 
