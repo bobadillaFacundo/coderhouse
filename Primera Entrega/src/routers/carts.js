@@ -1,23 +1,24 @@
 import { Router } from "express"
+import f from "../file.js"
 
 const router = Router()
-let carts = []
+let carts = f.getProductsFromFile("./carts.json")
 
 router.get("/", (req, res) => {
-    if (req.query.limit) {
-        let l = parseInt(req.query.limit)
-        let resultado = carts.slice(0, l);
-        return res.send(resultado)
-    }
     res.send(carts)
 })
 
-router.get("/:pid", (req, res) => {
-    const cart = carts.find(cart => cart.id === req.params.pid)
-    if (!cart) {
-        res.status(404).send('ID no encontrado');
-    }
-    res.send(cart)
+router.get("/:cid",(req,res)=>{
+    const cart = carts.find(cart => cart.id === req.params.cid)
+    res.send(cart.products)
+})
+
+
+router.post("/:cid/product/:pid",(req,res)=>{
+    const cart = carts.find(cart => cart.id === req.params.cid)
+    const product = cart.products.find(product => product.id === req.params.cid)
+
+    
 })
 
 export default router

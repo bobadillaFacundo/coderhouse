@@ -1,12 +1,11 @@
-const { log } = require('console');
-const fs = require('fs');
+import fs from "fs"
 
 class ProductManager {
 
     #id
 
     constructor(path) {
-        this.#id = 0;
+        this.#id = Date.now()
         this.path = path
     }
 
@@ -15,9 +14,8 @@ class ProductManager {
     }
 
     addProduct(title, description, price, thumbnail, code, stock) {
-        this.#id++;
         const product = {
-            id: this.#id,
+            id: this.#id++,
             title,
             description,
             price,
@@ -70,7 +68,7 @@ class ProductManager {
     }
 
     updateProduct(product) {
-        const arr = this.getProductsFromFile();
+        const arr = this.getProductsFromFile()
         const result2 = arr.find(produ => produ.id === product.id)
         if (!result2)
             return `ERROR, no se encuentra ID ${product.id}`
@@ -105,7 +103,7 @@ console.log(a.getProducts())
 a.deleteProduct(2)
 console.log("Productos despues de eliminar el 2:")
 console.log(a.getProducts())
-a.updateProduct({ id: 1, title: "cambio", description: "cambio", price: 32423, thumbnail: "cambio", code: "abcd12345", stock: 21121 })
+a.updateProduct({ id: 1718762318131, title: "cambio2c", description: "cambio", price: 32423, thumbnail: "cambio", code: "abcd12345", stock: 21121 })
 console.log("Productos despues de actualizar el 1:")
 console.log(a.getProducts())
 //a.unlinkFileProduct()
