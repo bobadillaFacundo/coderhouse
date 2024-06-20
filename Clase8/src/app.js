@@ -5,7 +5,6 @@ import express from "express"
 const app = express()
 const port = 8080
 
-console.log(users);
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/api/users', users); // Monta el router de usuarios en /api/users
