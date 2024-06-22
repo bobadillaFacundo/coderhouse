@@ -1,9 +1,17 @@
-const socket = io()
-console.log(socket.data) 
 
-socket.emit('message',"Hola mundo")
+document.addEventListener('DOMContentLoaded', () => {
+    const socket = io()
+    
+    const mensajeInput = document.getElementById('input');
+    const respuestaDiv = document.getElementById('enviar');
 
-socket.on('evento_para_todos',(data)=>{
-    console.log('esucho el mensaje del servidor ',data)
-})
+    respuestaDiv.addEventListener('click', () => {
+        const mensaje = mensajeInput.value
+        if (mensaje) {
+            // Enviar mensaje al servidor
+            socket.emit('message', mensaje)
+            mensajeInput.value = '' // Limpiar el input
+        }
+    }
+)})
 

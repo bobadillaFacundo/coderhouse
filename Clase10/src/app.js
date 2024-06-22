@@ -2,7 +2,7 @@ import express from "express"
 import engine from "express-handlebars"
 import __dirname from "./utils.js"
 import viewsrouter from "./routers/views.router.js"
-import {Server, Socket} from "socket.io"
+import {Server} from "socket.io"
 
 const app = express()
 const httpserver = app.listen(8080,()=>console.log("servidor escuchando en el puerto 8080"))
@@ -17,18 +17,22 @@ const messages = []
 
 socketserver.on('connection',socket=>{
     console.log("Nuevo cliente conectado")
+    console.log('Lista de mensajes viejos: ',messages)
     socket.on('message',(data=>{
         messages.push({
-            socketserver,
+            id: socket.id,
             data
         })
-        const result = data.split("")
-        result.forEach(element => {
-            console.log(element)
-        })
+            console.log(data)
     }))
     socketserver.emit('evento_para_todos',"Hola mundo")
+    
+    socket.on('disconnect', () => {
+        console.log(`Cliente desconectado: ${socket.id}`);
+    })
 
-    socket.disconnect()
 })
+
+
+
 
