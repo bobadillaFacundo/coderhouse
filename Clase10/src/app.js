@@ -2,7 +2,7 @@ import express from "express"
 import engine from "express-handlebars"
 import __dirname from "./utils.js"
 import viewsrouter from "./routers/views.router.js"
-import {Server} from "socket.io"
+import {Server, Socket} from "socket.io"
 
 const app = express()
 const httpserver = app.listen(8080,()=>console.log("servidor escuchando en el puerto 8080"))
@@ -27,5 +27,8 @@ socketserver.on('connection',socket=>{
             console.log(element)
         })
     }))
-    socket.emit('enviar_string',messages)
+    socketserver.emit('evento_para_todos',"Hola mundo")
+
+    socket.disconnect()
 })
+

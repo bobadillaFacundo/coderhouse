@@ -1,9 +1,9 @@
 const socket = io()
+console.log(socket.data) 
 
-socket.on('connect', () => {
-    console.log('Conectado al servidor')
-    socket.emit('message',"Hola mundo")
-    socket.on('enviar_string', data => {
-        console.log('Mensaje recibido desde el servidor:', data)
-    })
+socket.emit('message',"Hola mundo")
+
+socket.on('evento_para_todos',(data)=>{
+    console.log('esucho el mensaje del servidor ',data)
 })
+
