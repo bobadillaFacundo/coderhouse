@@ -24,11 +24,11 @@ socketserver.on('connection', socket => {
 
         socketserver.emit('entrada', () => {
             console.log(`Nuevo cliente conectado ${socket.id}`)
-            messages.push({
-                id: user,
-                data: 'Se conecto'
-            })
-            socketserver.emit('mensaje_servidor_todos', messages)
+            // messages.push({
+            //     id: user,
+            //     data: 'Se conecto'
+            // })
+            socket.broadcast.emit('mensaje_servidor_todos', "Seconecto")
         })
         socket.on('message', (data => {
             messages.push({
