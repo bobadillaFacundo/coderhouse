@@ -19,33 +19,35 @@ document.addEventListener('DOMContentLoaded', () => {
         mensaje.value = ''
         user = result.value
         socket.emit('identificarse', user)
-       
-        socket.on('mensaje_servidor_para_todos', (user) => {
-            mensaje.value = `Se conecto: ${user}`
-        })
-
-        socket.on('mensaje_servidor_todos', (data) => {
-            let result = ''
-            data.forEach(element => {
-                result += `${element.id} dice: ${element.data} ` + "\n"
-            })
-            mensaje.value = result
-        }
-        )
-    
-        respuestaDiv.addEventListener('click', () => {
-            if (mensajeInput.value) {
-                // Enviar mensaje al servidor
-                socket.emit('message', mensajeInput.value)
-                mensajeInput.value = '' // Limpiar el input
-            }
-        }
-        )
+      
     })
-    
-    
-    
+
+
+     
+    socket.on('mensaje_servidor_broadcast', (element) => {
+        console.log(element)
+        mensaje.value = `${element.id} dice: ${element.data}  `
+    })
+
+    socket.on('mensaje_servidor_todos', (data) => {
+        let result = ''
+        data.forEach(element => {
+            result += `${element.id} dice: ${element.data} ` + "\n"
+        })
+        mensaje.value = result
+    }
+    )
+
+    respuestaDiv.addEventListener('click', () => {
+        if (mensajeInput.value) {
+            // Enviar mensaje al servidor
+            socket.emit('message', mensajeInput.value,user)
+            mensajeInput.value = '' // Limpiar el input
+        }
+    })
+
 })
+
 
 
 

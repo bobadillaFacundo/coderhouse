@@ -21,30 +21,31 @@ let user = []
 socketserver.on('connection', socket => {
 
     socket.on('identificarse', us => {
-        user = us 
+        console.log(messages)
+        user.push({
+            idsocket:socket.id,
+            user: us
+        }) 
         messages.push({
             id: us,
             data: 'Cliente conectado '
         })        
         console.log(`Cliente conectado: ${socket.id}`);
-        socket.broadcast.emit('mensaje_servidor_para_todos',messages)
+        
+        socket.broadcast.emit('mensaje_servidor_broadcast',{
+            id: us,
+            data: 'Cliente conectado '
+        })
     })
 
-    socket.on('message', (data => {
+    socket.on('message', (data,user) => {
         messages.push({
             id: user,
             data
         })
         socketserver.emit('mensaje_servidor_todos', messages)
-    }))
-
-    socket.on('disconnect', () => {
-        console.log(`Cliente desconectado: ${socket.id}`);
-        messages.push({
-            id: user,
-            data: 'Se desconecto'
-        })
     })
+
     socketserver.emit('mensaje_servidor_todos', messages)
 
 })
