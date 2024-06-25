@@ -2,17 +2,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io()
     let user
-
-
   
     Swal.fire({
         title: 'Identificarse',
         input: 'text',
         toast:true,
         text: 'Ingresa el usuario para identificarse en el chat',
-        inputValidador: (value) => {
-            return !value && 'Necesitas escribir un nombre de usuario para conectarse'
-        },
+        // inputValidador: (value) => {
+        //     return !value && 'Necesitas escribir un nombre de usuario para conectarse'
+        // },
         allowOutsideClick: false
     }).then(result => {
         user = result.value

@@ -24,7 +24,7 @@ socketserver.on('connection', socket => {
         user = us
 
         socketserver.emit('entrada', () => {
-            console.log(`Nuevo cliente conectado ${socket.id}`)
+            // console.log(`Nuevo cliente conectado ${socket.id}`)
             // messages.push({
             //     id: user,
             //     data: 'Se conecto'
@@ -41,7 +41,7 @@ socketserver.on('connection', socket => {
 
 
         socket.on('disconnect', () => {
-            console.log(`Cliente desconectado: ${socket.id}`);
+            // console.log(`Cliente desconectado: ${socket.id}`);
             messages.push({
                 id: user,
                 data: 'Se desconecto'
