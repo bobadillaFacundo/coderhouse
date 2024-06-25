@@ -16,25 +16,15 @@ app.use("/api", viewsrouter)
 app.use('/css', express.static('public/css'));
 
 const messages = []
-let user = []
 
 socketserver.on('connection', socket => {
 
     socket.on('identificarse', us => {
-        console.log(messages)
-        user.push({
-            idsocket:socket.id,
-            user: us
-        }) 
-        messages.push({
-            id: us,
-            data: 'Cliente conectado '
-        })        
+          
         console.log(`Cliente conectado: ${socket.id}`);
-        
         socket.broadcast.emit('mensaje_servidor_broadcast',{
             id: us,
-            data: 'Cliente conectado '
+            data: 'Conectado '
         })
     })
 

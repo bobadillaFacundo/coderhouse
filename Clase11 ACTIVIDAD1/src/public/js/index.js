@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
      
     socket.on('mensaje_servidor_broadcast', (element) => {
         console.log(element)
-        mensaje.value = `${element.id} dice: ${element.data}  `
+        mensaje.value += `${element.id}  ${element.data}`
     })
 
     socket.on('mensaje_servidor_todos', (data) => {
