@@ -1,8 +1,12 @@
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io()
     let user
-  
+    const mensaje = document.getElementById('texto')
+    const mensajeInput = document.getElementById('input');
+    const respuestaDiv = document.getElementById('enviar')
+
     Swal.fire({
         title: 'Identificarse',
         input: 'text',
@@ -12,36 +16,39 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         allowOutsideClick: false
     }).then(result => {
+        mensaje.value = ''
         user = result.value
         socket.emit('identificarse', user)
+       
+        socket.on('mensaje_servidor_para_todos', (user) => {
+            mensaje.value = `Se conecto: ${user}`
+        })
 
         
     })
     
-
     socket.on('mensaje_servidor_todos', (data) => {
-        const mensajeInput = document.getElementById('texto')
         let result = ''
         data.forEach(element => {
             result += `${element.id} dice: ${element.data} ` + "\n"
         })
-        mensajeInput.value = result
+        mensaje.value = result
     }
     )
 
-    const mensajeInput = document.getElementById('input');
-    const respuestaDiv = document.getElementById('enviar');
-
     respuestaDiv.addEventListener('click', () => {
-        const mensaje = mensajeInput.value
-        if (mensaje) {
+        if (mensajeInput.value) {
             // Enviar mensaje al servidor
-            socket.emit('message', mensaje)
+            socket.emit('message', mensajeInput.value)
             mensajeInput.value = '' // Limpiar el input
         }
     }
     )
-
-
+    
 })
+
+
+
+
+
 

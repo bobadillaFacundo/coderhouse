@@ -16,33 +16,35 @@ app.use("/api", viewsrouter)
 app.use('/css', express.static('public/css'));
 
 const messages = []
-let user
+let user = []
 
 socketserver.on('connection', socket => {
 
     socket.on('identificarse', us => {
-        user = us
-
-       
-        socket.on('message', (data => {
-            messages.push({
-                id: user,
-                data
-            })
-            socketserver.emit('mensaje_servidor_todos', messages)
-        }))
-
-
-        socket.on('disconnect', () => {
-            // console.log(`Cliente desconectado: ${socket.id}`);
-            messages.push({
-                id: user,
-                data: 'Se desconecto'
-            })
-            socketserver.emit('mensaje_servidor_todos', messages)
-        })
-
+        messages.push({
+            id: us,
+            data: 'Cliente conectado '
+        })        
+        console.log(`Cliente conectado: ${socket.id}`);
+        socket.broadcast.emit('mensaje_servidor_para_todos',messages)
     })
+
+    socket.on('message', (data => {
+        messages.push({
+            id: user,
+            data
+        })
+        socketserver.emit('mensaje_servidor_todos', messages)
+    }))
+
+    socket.on('disconnect', () => {
+        console.log(`Cliente desconectado: ${socket.id}`);
+        messages.push({
+            id: user,
+            data: 'Se desconecto'
+        })
+    })
+    socketserver.emit('mensaje_servidor_todos', messages)
 
 })
 

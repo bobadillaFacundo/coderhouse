@@ -64,7 +64,11 @@ class ProductManager {
     }
 
     saveProductsToFile(product) {
-        fs.writeFileSync(this.path, JSON.stringify(product), 'utf8')
+        try {
+            fs.writeFileSync(this.path, JSON.stringify(product), 'utf8')
+        }catch(error){
+
+        }
     }
 
     updateProduct(product) {
