@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Identificarse',
         input: 'text',
         text: 'Ingresa el usuario para identificarse en el chat',
-        // inputValidador: (value) => {
-        //     return !value && 'Necesitas escribir un nombre de usuario para conectarse'
-        // },
+        inputValidator: (value) => {
+            return !value && 'Necesitas escribir un nombre de usuario para conectarse'
+        },
         allowOutsideClick: false
     }).then(result => {
         user = result.value
@@ -17,10 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
     })
-    socket.on('entrada', () => {
-        const mensajeInput = document.getElementById('texto')
-        mensajeInput.value =  `se conecto ${user} `
-    })
+    
 
     socket.on('mensaje_servidor_todos', (data) => {
         const mensajeInput = document.getElementById('texto')
