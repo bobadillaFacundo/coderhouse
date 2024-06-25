@@ -21,6 +21,7 @@ let user = []
 socketserver.on('connection', socket => {
 
     socket.on('identificarse', us => {
+        user = us 
         messages.push({
             id: us,
             data: 'Cliente conectado '
