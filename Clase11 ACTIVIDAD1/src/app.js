@@ -22,6 +22,7 @@ socketserver.on('connection', socket => {
     socket.on('identificarse', us => {
           
         console.log(`Cliente conectado: ${socket.id}`);
+        socket.emit('message',messages)
         socket.broadcast.emit('mensaje_servidor_broadcast',{
             id: us,
             data: 'Conectado '
@@ -38,6 +39,13 @@ socketserver.on('connection', socket => {
 
     socketserver.emit('mensaje_servidor_todos', messages)
 
+    socket.on('disconnection', (us)=>{
+        console.log(`Cliente desconectado: ${socket.id}`);
+        socket.broadcast.emit('mensaje_servidor_broadcast',{
+            id: us,
+            data: 'Desconecto '
+        })
+    })
 })
 
 

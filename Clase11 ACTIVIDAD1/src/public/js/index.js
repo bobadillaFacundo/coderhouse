@@ -1,6 +1,4 @@
 
-
-document.addEventListener('DOMContentLoaded', () => {
     const socket = io()
     let user
     const mensaje = document.getElementById('texto')
@@ -18,15 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }).then(result => {
         mensaje.value = ''
         user = result.value
-        socket.emit('identificarse', user)
-      
-    })
-
-
-     
-    socket.on('mensaje_servidor_broadcast', (element) => {
-        console.log(element)
-        mensaje.value += `${element.id}  ${element.data}`
+        socket.emit('identificarse', user)  
+        
+        socket.on('mensaje_servidor_broadcast', (element) => {
+        mensaje.value += `${element.id} dice: me ${element.data} ` + "\n"
     })
 
     socket.on('mensaje_servidor_todos', (data) => {
@@ -38,6 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     )
 
+    socket.on('message',data => {
+        let result = ''
+        data.forEach(element => {
+            result += `${element.id} dice: ${element.data} ` + "\n"
+        })
+        mensaje.value += result
+    })
+
     respuestaDiv.addEventListener('click', () => {
         if (mensajeInput.value) {
             // Enviar mensaje al servidor
@@ -46,11 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
+
+    window.addEventListener('beforeunload', ()=> {
+        socket.emit('disconnection', user) 
+    })
+     
 })
-
-
-
-
-
-
-
