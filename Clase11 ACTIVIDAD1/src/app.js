@@ -1,8 +1,8 @@
 import express from "express"
 import engine from "express-handlebars"
 import __dirname from "./utils.js"
-import viewsrouter from "./routers/views.router.js"
 import { Server } from "socket.io"
+import viewsrouter from "./routers/views.router.js"
 
 const app = express()
 //'0134.0.253.47',
@@ -22,7 +22,9 @@ socketserver.on('connection', socket => {
     socket.on('identificarse', us => {
           
         console.log(`Cliente conectado: ${socket.id}`);
+      
         socket.emit('message',messages)
+        
         socket.broadcast.emit('mensaje_servidor_broadcast',{
             id: us,
             data: 'Conectado '

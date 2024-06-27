@@ -2,7 +2,7 @@
     const socket = io()
     let user
     const mensaje = document.getElementById('texto')
-    const mensajeInput = document.getElementById('input');
+    const mensajeInput = document.getElementById('input')
     const respuestaDiv = document.getElementById('enviar')
 
     Swal.fire({
@@ -16,10 +16,14 @@
     }).then(result => {
         mensaje.value = ''
         user = result.value
+
+        socket.connect()
+
         socket.emit('identificarse', user)  
         
         socket.on('mensaje_servidor_broadcast', (element) => {
-        mensaje.value += `${element.id} dice: me ${element.data} ` + "\n"
+        
+        mensaje.value += `${element.id}  ${element.data} ` + "\n"
     })
 
     socket.on('mensaje_servidor_todos', (data) => {

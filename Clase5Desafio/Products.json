@@ -1,9 +1,1 @@
-[ {
-    "id": 1718762318131,
-    "title": "cambio2c",
-    "description": "cambio",
-    "price": 32423,
-    "thumbnail": "cambio",
-    "code": "abcd12345",
-    "stock": 21121
-}]
+[{"id":1719443668842,"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25},{"id":1719443668843,"title":"producto prueba2","description":"Este es un producto prueba2","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25},{"id":1719443668844,"title":"producto prueba3","description":"Este es un producto prueba3","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25},{"id":1719456734897,"title":"producto prueba","description":"Este es un producto prueba","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25},{"id":1719456734898,"title":"producto prueba2","description":"Este es un producto prueba2","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25},{"id":1719456734899,"title":"producto prueba3","description":"Este es un producto prueba3","price":200,"thumbnail":"Sin imagen","code":"abc123","stock":25}]
