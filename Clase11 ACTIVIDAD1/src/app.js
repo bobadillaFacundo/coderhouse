@@ -12,7 +12,7 @@ app.engine("handlebars", engine.engine())
 app.set("view engine", "handlebars")
 app.set("views", __dirname + "/views")
 app.use(express.static(__dirname + "/public"))
-app.use("/api", viewsrouter)
+app.use("/", viewsrouter)
 app.use('/css', express.static('public/css'));
 
 const messages = []
