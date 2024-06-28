@@ -33,7 +33,7 @@ socketserver.on('connection', socket => {
           
         console.log(`Cliente conectado: ${socket.id}`);
       
-        socket.emit('message',messages)
+        socket.emit('message',obtenerTodosLosDocumentos())
         const date = new Date()
         const mess = {
           id: us,
@@ -51,7 +51,7 @@ socketserver.on('connection', socket => {
             data,
             date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
         })
-        socketserver.emit('mensaje_servidor_todos', messages)
+        socketserver.emit('mensaje_servidor_todos', obtenerTodosLosDocumentos())
     })
 
     socketserver.emit('mensaje_servidor_todos', messages)
@@ -108,6 +108,24 @@ async function obtenerDocumentoPorId(documentId) {
       const documento = await collection.findOne({ _id: objectId });
 
       return documento;
+  } finally {
+      await client.close(); // Cerrar la conexión cuando termine
+  }
+}
+
+// Función para obtener todos los documentos de una colección
+async function obtenerTodosLosDocumentos() {
+  const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  try {
+      await client.connect(); // Conexión a la base de datos
+      const db = client.db(dbName);
+      const collection = db.collection('mensajes');
+
+      // Consulta para obtener todos los documentos de la colección
+      const documentos = await collection.find({}).toArray();
+
+      return documentos;
   } finally {
       await client.close(); // Cerrar la conexión cuando termine
   }
