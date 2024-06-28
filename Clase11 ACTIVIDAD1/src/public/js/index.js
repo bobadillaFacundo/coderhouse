@@ -12,7 +12,8 @@
         inputValidator: (value) => {
             return !value && 'Necesitas escribir un nombre de usuario para conectarse'
         },
-        allowOutsideClick: false
+        toast: true
+        
     }).then(result => {
         mensaje.value = ''
         user = result.value
@@ -23,13 +24,13 @@
         
         socket.on('mensaje_servidor_broadcast', (element) => {
         
-        mensaje.value += `${element.id}  ${element.data} ` + "\n"
+        mensaje.value += `${element.id} ${element.data} ${element.date}` + "\n"
     })
 
     socket.on('mensaje_servidor_todos', (data) => {
         let result = ''
         data.forEach(element => {
-            result += `${element.id} dice: ${element.data} ` + "\n"
+            result += `${element.id} dice: ${element.data} ${element.date}` + "\n"
         })
         mensaje.value = result
     }
@@ -38,7 +39,7 @@
     socket.on('message',data => {
         let result = ''
         data.forEach(element => {
-            result += `${element.id} dice: ${element.data} ` + "\n"
+            result += `${element.id} dice: ${element.data} ${element.date}` + "\n"
         })
         mensaje.value += result
     })

@@ -6,7 +6,7 @@ import viewsrouter from "./routers/views.router.js"
 
 const app = express()
 //'0134.0.253.47',
-const httpserver = app.listen(8080, () => console.log("servidor escuchando en el puerto 8080"))
+const httpserver = app.listen(8000, () => console.log("servidor escuchando en el puerto 8080"))
 const socketserver = new Server(httpserver)
 app.engine("handlebars", engine.engine())
 app.set("view engine", "handlebars")
@@ -24,17 +24,20 @@ socketserver.on('connection', socket => {
         console.log(`Cliente conectado: ${socket.id}`);
       
         socket.emit('message',messages)
-        
+        const date = new Date()
         socket.broadcast.emit('mensaje_servidor_broadcast',{
             id: us,
-            data: 'Conectado '
+            data: 'Conectado ',
+            date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
         })
     })
 
     socket.on('message', (data,user) => {
+        const date = new Date()
         messages.push({
             id: user,
-            data
+            data,
+            date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
         })
         socketserver.emit('mensaje_servidor_todos', messages)
     })
@@ -43,9 +46,11 @@ socketserver.on('connection', socket => {
 
     socket.on('disconnection', (us)=>{
         console.log(`Cliente desconectado: ${socket.id}`);
+        const date = new Date()
         socket.broadcast.emit('mensaje_servidor_broadcast',{
             id: us,
-            data: 'Desconecto '
+            data: 'Desconecto ',
+            date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
         })
     })
 })
