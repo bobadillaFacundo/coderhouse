@@ -1,7 +1,7 @@
 {
   "name": "clase12chatconmongo",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node --watch ./src/app.js"
   },

@@ -1,3 +1,4 @@
+
 const { MongoClient } = require('mongodb');
 const express = require('express')
 const engine = require("express-handlebars")
@@ -5,7 +6,7 @@ const { Server } = require("socket.io")
 const viewsrouter = require("./routers/viewsrouter.js")
 const __dirname = require("./utils.js")
 
-const app = express()
+const app = express.express()
 const httpserver = app.listen(8080, () => console.log("servidor escuchando en el puerto 8080"))
 const socketserver = new Server(httpserver)
 app.engine("handlebars", engine.engine())
@@ -34,16 +35,18 @@ socketserver.on('connection', socket => {
       
         socket.emit('message',messages)
         const date = new Date()
-        socket.broadcast.emit('mensaje_servidor_broadcast',{
-            id: us,
-            data: 'Conectado ',
-            date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
-        })
+        const mess = {
+          id: us,
+          data: 'Conectado ',
+          date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
+        }
+        main(mess)
+        socket.broadcast.emit('mensaje_servidor_broadcast',mess)
     })
 
     socket.on('message', (data,user) => {
         const date = new Date()
-        messages.push({
+        main({
             id: user,
             data,
             date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
@@ -90,5 +93,22 @@ async function main(message) {
   }
 }
 
-// Llamar a la función principal
-main().catch(console.error);
+async function obtenerDocumentoPorId(documentId) {
+  const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
+
+  try {
+      await client.connect(); // Conexión a la base de datos
+      const db = client.db(dbName);
+      const collection = db.collection('mensajes');
+
+      // Convertir el string del ID a ObjectId (necesario para la búsqueda por _id)
+      const objectId = new ObjectId(documentId);
+
+      // Consulta para obtener el documento por su _id
+      const documento = await collection.findOne({ _id: objectId });
+
+      return documento;
+  } finally {
+      await client.close(); // Cerrar la conexión cuando termine
+  }
+}
