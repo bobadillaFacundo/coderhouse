@@ -1,19 +1,25 @@
-FROM node:latest
+# Usa una imagen base de Node.js
+FROM node:21
 
-# Establecemos el directorio de trabajo dentro del contenedor
-WORKDIR /app
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /usr/src/app
 
-# Copiamos el archivo package.json y package-lock.json (si existe)
+# Copia el package.json y package-lock.json para instalar las dependencias
 COPY package*.json ./
 
-# Instalamos las dependencias del proyecto
+# Instala las dependencias
 RUN npm install
 
-# Copiamos el resto de los archivos del proyecto
+# Copia el resto de la aplicación
 COPY . .
 
-# Exponemos el puerto en el que la aplicación va a correr
-EXPOSE 8080
+# Expone el puerto 3000
+EXPOSE 3000
+
+# Variables de entorno para MongoDB
+ENV MONGO_URL='mongodb://localhost:27017'
+ENV MONGO_DB='coderhouse'
+ENV MONGO_COLLECTION='mensajes'
 
 # Comando para ejecutar la aplicación
-CMD ["npm", "start"]
+CMD [ "npm", "start" ]
