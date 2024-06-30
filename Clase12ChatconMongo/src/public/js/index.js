@@ -25,22 +25,12 @@ Swal.fire({
         mensaje.value += `${element.id} ${element.data} ${element.date}` + "\n"
     })
 
-    socket.on('mensaje_servidor_todos', (data) => {
-        let result = ''
-        console.log(data)
-        data.forEach(element => {
-            result += `${element.id} dice: ${element.data} ${element.date}` + "\n"
-        })
-        mensaje.value = result
-    }
-    )
-
     socket.on('message', data => {
         let result = ''
         data.forEach(element => {
             result += `${element.id} dice: ${element.data} ${element.date}` + "\n"
         })
-        mensaje.value = result
+        mensaje.value += result
     })
 
     respuestaDiv.addEventListener('click', () => {
@@ -50,7 +40,6 @@ Swal.fire({
             mensajeInput.value = '' // Limpiar el input
         }
     })
-
 
     window.addEventListener('beforeunload', () => {
         socket.emit('disconnection', user)

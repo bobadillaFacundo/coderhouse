@@ -34,21 +34,19 @@ socketserver.on('connection', socket => {
       data: 'Conectado ',
       date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
     }
-    socket.broadcast.emit('mensaje_servidor_broadcast', mess)
     obtenerTodosLosDocumentos(socket)
-
+    socket.broadcast.emit('mensaje_servidor_broadcast', mess)
   })
- 
-  socket.on('message', async(data, user) => {
+
+  socket.on('message', async (data, user) => {
     const date = new Date()
-    await insertarUnElemento({
+    const mess = insertarUnElemento({
       id: user,
       data,
       date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
     })
+    socketserver.emit('message', [mess])
   })
-
-  socket.emit('mensaje_servidor_todos', obtenerTodosLosDocumentos(socketserver))
 
   socket.on('disconnection', (us) => {
     console.log(`Cliente desconectado: ${socket.id}`);
