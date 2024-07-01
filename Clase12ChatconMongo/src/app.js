@@ -40,11 +40,12 @@ socketserver.on('connection', socket => {
 
   socket.on('message', async (data, user) => {
     const date = new Date()
-    const mess = insertarUnElemento({
+    const mess ={
       id: user,
       data,
       date: `${date.getDay()}/${date.getMonth()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
-    })
+    }
+    insertarUnElemento(mess)
     socketserver.emit('message', [mess])
   })
 
