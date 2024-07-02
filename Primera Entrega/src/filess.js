@@ -1,4 +1,4 @@
-import fs from "fs"
+const fs = require("fs")
 
 class filess {
 
@@ -18,4 +18,4 @@ class filess {
 }
 
 const f = new filess()
-export default f
+module.exports = f

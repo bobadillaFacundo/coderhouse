@@ -1,0 +1,21 @@
+version: '3'
+services:
+  node-app:
+    build: .  # Especifica la ruta al directorio donde se encuentra el Dockerfile de tu aplicación Node.js
+    ports:
+      - '8002:8002'      # Mapea el puerto 3000 de tu máquina local al puerto 3000 del contenedor
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/coderhouse  # URI de conexión a MongoDB
+    depends_on:
+      - mongo            # Asegura que MongoDB se inicie antes que la aplicación Node.js
+
+  mongo:
+    image: mongo  # Utiliza la imagen oficial de MongoDB desde Docker Hub
+    ports:
+      - '27017:27017'    # Mapea el puerto 27017 de tu máquina local al puerto 27017 del contenedor
+    volumes:
+      - mongo-data:/data/db  # Persistencia de datos de MongoDB en un volumen
+
+volumes:
+  mongo-data:
+    driver: local        

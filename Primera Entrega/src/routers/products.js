@@ -1,16 +1,15 @@
-import { Router } from "express"
-import f from "../filess.js"
+const { Router } = require("express")
+const f = require("../filess.js")
 
 const router = Router()
 let products = f.getFromFile("./products.json")
 
 router.get("/", (req, res) => {
     if (req.query.limit) {
-        let l = parseInt(req.query.limit)
-        if (l > (products.length + 1))
+        if (req.query.limit > (products.length + 1))
             return res.status(404).send({ status: "success", error: "numero mayor a la cantidad de productos" })
 
-        let resultado = products.slice(0, l);
+        let resultado = products.slice(0, req.query.limit);
         return res.send(resultado)
     }
     res.send(products)
@@ -70,11 +69,11 @@ router.put("/:pid", (req, res) => {
 
 router.delete("/:pid", (req, res) => {
     const len = products.length
-    products = products.filter(product => product.id !== req.palabra.pid)
+    products = products.filter(product => product.id !== parseInt(req.params.pid))
     if (len === products.length)
         return res.status(404).send({ status: "success", error: "No se encontro id" })
     f.saveToFile(products, "./products.json")
     return res.send({ status: "success", message: "Product delete" })
 })
 
-export default router
+module.exports = router
