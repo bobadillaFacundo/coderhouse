@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
             return res.status(404).send({ status: "success", error: "numero mayor a la cantidad de productos" })
 
         let resultado = products.slice(0, req.query.limit);
-        return res.send(resultado)
+        return res.json(resultado)
     }
     res.send(products)
 })
@@ -20,7 +20,7 @@ router.get("/:pid", (req, res) => {
     if (!product) {
         res.status(404).send({ status: "success", error: "id no existe" })
     }
-    res.send(product)
+    res.json(product)
 })
 
 router.post("/", ((req, res) => {
@@ -47,7 +47,6 @@ router.post("/", ((req, res) => {
 
 router.put("/:pid", (req, res) => {
     const user = req.body
-    console.log(req.params.pid);
     const pid = parseInt(req.params.pid)
     const productIndex = products.findIndex(prod => prod.id === pid);
 
