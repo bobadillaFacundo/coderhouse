@@ -9,7 +9,7 @@ router.get("/:cid", (req, res) => {
     if (!cart) {
         return res.status(404).send({ status: "success", error: "id no existe" })
     }
-    res.send(cart.products)
+    res.json(cart.products)
 })
 
 router.post("/:cid/product/:pid", (req, res) => {
@@ -18,7 +18,7 @@ router.post("/:cid/product/:pid", (req, res) => {
 
     const products = f.getFromFile('./products.json')
     let product = products.find(pro => pro.id === parseInt(req.params.pid))
-    if (!product) return res.status(404).send({ status: "success", error: "No product id no existe" })//si no existe
+    if (!product) return res.status(404).sen({ status: "success", error: "No product id no existe" })//si no existe
 
     product = cart.products.find(pro => pro.id === parseInt(req.params.pid))//busca el producto mandado
     if (!product) {
@@ -28,11 +28,11 @@ router.post("/:cid/product/:pid", (req, res) => {
         }
         cart.products.push(product)
         f.saveToFile(carts, "./carts.json")
-        return res.send(product)
+        return res.json(product)
     }
     product.quantity++
     f.saveToFile(carts, "./carts.json")
-    res.send(product)
+    res.json(product)
 }
 
 
@@ -47,7 +47,7 @@ router.post("/", (req, res) => {
     }
     carts.push(cart)
     f.saveToFile(carts, "./carts.json")
-    res.send({ status: "success", message: "Cart add" })
+    res.json({ status: "success", message: "Cart add" })
 })
 
 module.exports = router
