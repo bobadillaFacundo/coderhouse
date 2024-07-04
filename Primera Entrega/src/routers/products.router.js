@@ -16,7 +16,7 @@ router.get("/", (req, res) => {
 })
 
 router.get("/:pid", (req, res) => {
-    const product = products.find(product => product.id === req.params.pid)
+    const product = products.find(product => product.id === parseInt(req.params.pid))
     if (!product) {
         res.status(404).send({ status: "success", error: "id no existe" })
     }
