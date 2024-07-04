@@ -1,5 +1,5 @@
-const carts = require("./routers/carts.js")
-const products = require("./routers/products.js")
+const carts = require("./routers/carts.router.js")
+const products = require("./routers/products.router.js")
 const express = require("express")
 
 const app = express()

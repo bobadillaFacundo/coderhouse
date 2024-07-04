@@ -17,20 +17,20 @@ router.post("/:cid/product/:pid", (req, res) => {
     if (!cart) return res.status(404).send({ status: "success", error: "No se encontro id cart" }) //pasa si no existe
 
     const products = f.getFromFile('./products.json')
-    let product = products.find(pro => pro.id === parseInt(req.params.pid))
-    if (!product) return res.status(404).sen({ status: "success", error: "No product id no existe" })//si no existe
+    let product = products.find(pro => pro.id === parseInt(req.params.pid))//controlar si hay product
+    if (!product) return res.status(404).send({ status: "success", error: "No product id no existe" })//si no existe)
 
     product = cart.products.find(pro => pro.id === parseInt(req.params.pid))//busca el producto mandado
     if (!product) {
         product = {
-            id: req.params.pid,
+            id: parseInt(req.params.pid),
             quantity: 1
         }
-        cart.products.push(product)
+        cart.products.push(product) //agrego producto
         f.saveToFile(carts, "./carts.json")
         return res.json(product)
     }
-    product.quantity++
+    product.quantity++ //incremento en uno el producto
     f.saveToFile(carts, "./carts.json")
     res.json(product)
 }

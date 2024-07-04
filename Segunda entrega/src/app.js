@@ -1,11 +1,9 @@
-import db from 'mongoose'
-import express from 'express'
-import engine from "express-handlebars"
-import __dirname from "./utils.js"
-import { Server } from "socket.io"
-import viewsrouter from "./routers/views.router.js"
+const db = require('mongoose')
+const express = require('express')
+const engine = require("express-handlebars")
+const { Server } = require("socket.io")
+const viewsrouter = require("./routers/views.router.js")
 
-db.connect('mongodb://localhost:/coderhouse')
 
 const app = express()
 const httpserver = app.listen(8080, () => console.log("servidor escuchando en el puerto 8080"))
@@ -18,4 +16,5 @@ app.use("/api", viewsrouter)
 app.use('/css', express.static('public/css'));
 
 socketserver.on('connection', socket => {
+  //  db.connect('mongodb://localhost:27017')
 })

@@ -40,7 +40,6 @@ router.post("/", ((req, res) => {
         thumbnails: user.thumbnails || []
     }
     products.push(product)
-    console.log(products);
     f.saveToFile(products, "./products.json")
     return res.send({ status: "success", message: "Product create" })
 }))
