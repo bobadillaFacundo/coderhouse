@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const socket = io()
     const mensaje = document.getElementById('texto')
     const mens =  document.getElementById('tex')
+    const mensajeInput = document.getElementById('input');
+    const respuestaDiv = document.getElementById('enviar');
 
     let user 
 
@@ -33,8 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         )
     
-        const mensajeInput = document.getElementById('input');
-        const respuestaDiv = document.getElementById('enviar');
     
         respuestaDiv.addEventListener('click', () => {
             const mensaje = mensajeInput.value

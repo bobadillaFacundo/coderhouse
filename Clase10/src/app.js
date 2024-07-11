@@ -15,36 +15,48 @@ app.use(express.static(__dirname + "/public"))
 app.use("/api", viewsrouter)
 
 const messages = []
-let user
+let users = []
 
 socketserver.on('connection', socket => {
 
-    socket.on('identificarse', us => {
-        user = us
+    socket.on('identificarse', user => {
+
+        users.push({
+            id: socket.id,
+            user
+        })
 
         socketserver.emit('entrada', () => {
             console.log(`Nuevo cliente conectado ${socket.id}`)
+            const user = users.find(id => id.id === socket.id)
             messages.push({
-                id: user,
-                data: 'Se conecto'
+                id: user.user,
+                data: 'me conecte'
             })
             socketserver.emit('mensaje_servidor_todos', messages)
         })
+
         socket.on('message', (data => {
+            
+            const user = users.find(id => id.id === socket.id)
             messages.push({
-                id: user,
+                id: user.user,
                 data
             })
+
+
+
             socketserver.emit('mensaje_servidor_todos', messages)
         }))
 
-
         socket.on('disconnect', () => {
             console.log(`Cliente desconectado: ${socket.id}`);
+            const user = users.find(id => id.id === socket.id)
             messages.push({
-                id: user,
-                data: 'Se desconecto'
+                id: user.user,
+                data: 'me desconecte'
             })
+            users = users.filter(id => id.id !== socket.id)
             socketserver.emit('mensaje_servidor_todos', messages)
         })
 
