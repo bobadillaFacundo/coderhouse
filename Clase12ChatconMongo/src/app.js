@@ -64,15 +64,15 @@ socketserver.on('connection', socket => {
 
 // Función para conectar a la base de datos y ejecutar operaciones
 async function insertarUnElemento(messages) {
-  let client = new MongoClient('mongodb://localhost:27017')
+  let client = new MongoClient(process.env.MONGO_URL)
   try {
     // Conectar al servidor MongoDB
     await client.connect();
     console.log('Conectado correctamente al servidor de MongoDB inertarUnElemento');
 
     // Seleccionar una base de datos
-    const db = client.db('coderhouse');
-    const collection = db.collection('mensajes');
+    const db = client.db(process.env.MONGO_DB);
+    const collection = db.collection(process.env.MONGO_COLLECTION);
     await collection.insertOne(messages);
   } catch (error) {
     console.error('Error al conectar o interactuar con la base de datos inertarUnElemento:', error);
@@ -84,12 +84,12 @@ async function insertarUnElemento(messages) {
 
 // Función para obtener todos los documentos de una colección
 async function obtenerTodosLosDocumentos(socketserver) {
-  let client = new MongoClient('mongodb://localhost:27017')
+  let client = new MongoClient(process.env.MONGO_URL)
   try {
     await client.connect(); // Conexión a la base de datos
     console.log('Conectado correctamente al servidor de MongoDB obtenerTodosLosDocumentos');
-    const db = client.db('coderhouse');
-    const collection = db.collection('mensajes')
+    const db = client.db(process.env.MONGO_DB);
+    const collection = db.collection(process.env.MONGO_COLLECTION)
     // Consulta para obtener todos los documentos de la colección
     const documents = await collection.find({}).toArray();
     socketserver.emit('message', documents)

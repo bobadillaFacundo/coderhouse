@@ -1,33 +1,26 @@
 version: '3.9'
-
 services:
   mongodb:
-    container_name: mongodb_container
     image: mongo:latest
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-    volumes:
-      - mongodb_data:/data/db
     ports:
       - "27017:27017"
-
+    volumes:
+      - mongo_data:/data/db
+  
   nodejs:
-    container_name: nodejs_container
-    build: .
-    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:
       - mongodb
     environment:
-      MONGO_URL: mongodb://mongo:27017/coderhouse
+      MONGO_URL: 'mongodb://mongodb:27017/coderhouse'
+      MONGO_DB: 'coderhouse'
+      MONGO_COLLECTION: 'mensajes'
 
 volumes:
-  mongodb_data:
-    driver: local
-      
-
-
+  mongo_data: {}
       
