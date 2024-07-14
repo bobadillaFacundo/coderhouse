@@ -16,10 +16,27 @@ app.use("/api", viewsrouter)
 app.use('/css', express.static('public/css'));
 
 socketserver.on('connection', socket => {
-    socket.on('postProduct', (product)=>{
+
+    socket.emit('getproducts',fs.getFromFile('./products.json'))
+
+
+    socket.on('postProduct', (product) => {
         product.id = Date.now()
         const products = fs.getFromFile('./products.json')
         products.push(product)
-        fs.saveToFile(products,'./products.json')
+        fs.saveToFile(products, './products.json')
+        socket.emit('getproducts',products)
+        socket.emit('message', 'Se creo el producto')
+    })
+    socket.on('deleteProduct', id => {
+        let products = fs.getFromFile('./products.json')
+        const product = products.find(product => product.id === parseInt(id))
+        if (product) {
+            products = products.filter(product => product.id !== parseInt(id))
+            fs.saveToFile(products, './products.json')
+            socket.emit('getproducts',products)
+            socket.emit('message', 'Se elimino el producto')
+        } else socket.emit('message', 'El id del producto no existe')
+
     })
 })
