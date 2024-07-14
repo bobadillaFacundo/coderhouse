@@ -9,9 +9,7 @@ router.get("/realtimeproducts", (req, res) => {
     res.render("realTimeProducts")
 })
 
-router.post("/realtimeproducts", (req, res) => {
-    res.render("realTimeProducts")
-})
+
 
 
 

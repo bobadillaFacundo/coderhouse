@@ -1,8 +1,8 @@
-const db = require('mongoose')
 const express = require('express')
 const engine = require("express-handlebars")
 const { Server } = require("socket.io")
 const viewsrouter = require("./routers/views.router.js")
+const fs = require('./filess.js')
 
 
 const app = express()
@@ -16,5 +16,10 @@ app.use("/api", viewsrouter)
 app.use('/css', express.static('public/css'));
 
 socketserver.on('connection', socket => {
-  //  db.connect('mongodb://localhost:27017')
+    socket.on('postProduct', (product)=>{
+        product.id = Date.now()
+        const products = fs.getFromFile('./products.json')
+        products.push(product)
+        fs.saveToFile(products,'./products.json')
+    })
 })
