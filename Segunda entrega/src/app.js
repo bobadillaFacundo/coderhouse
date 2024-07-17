@@ -1,8 +1,9 @@
-const express = require('express')
-const engine = require("express-handlebars")
-const { Server } = require("socket.io")
-const viewsrouter = require("./routers/views.router.js")
-const fs = require('./filess.js')
+import express from 'express'
+import engine from "express-handlebars"
+import { Server } from "socket.io"
+import __dirname from './utils.js'
+import viewsrouter from "./routers/views.router.js"
+import { getFromFile,saveToFile } from './utils.js' 
 
 
 const app = express()
@@ -17,24 +18,24 @@ app.use('/css', express.static('public/css'));
 
 socketserver.on('connection', socket => {
 
-    socket.emit('getproducts',fs.getFromFile('./products.json'))
-
+    socket.emit('getproducts', getFromFile('./products.json'))
 
     socket.on('postProduct', (product) => {
         product.id = Date.now()
-        const products = fs.getFromFile('./products.json')
+        const products = getFromFile('./products.json')
         products.push(product)
-        fs.saveToFile(products, './products.json')
-        socket.emit('getproducts',products)
+        saveToFile(products, './products.json')
+        socketserver.emit('getproducts', products)
         socket.emit('message', 'Se creo el producto')
     })
+
     socket.on('deleteProduct', id => {
-        let products = fs.getFromFile('./products.json')
+        let products = getFromFile('./products.json')
         const product = products.find(product => product.id === parseInt(id))
         if (product) {
             products = products.filter(product => product.id !== parseInt(id))
-            fs.saveToFile(products, './products.json')
-            socket.emit('getproducts',products)
+            saveToFile(products, './products.json')
+            socketserver.emit('getproducts', products)
             socket.emit('message', 'Se elimino el producto')
         } else socket.emit('message', 'El id del producto no existe')
 
